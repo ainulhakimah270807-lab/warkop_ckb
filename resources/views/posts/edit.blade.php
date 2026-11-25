@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    <form action="{{ route('posts.update', $post->id) }}" method="POST">
+    <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row g-4">
@@ -54,6 +54,8 @@
         </div>
         <div class="form-check form-switch mt-3"><input class="form-check-input" type="checkbox" name="status" value="1" @checked(old('status', $post->is_active))><label class="form-check-label small">Produk aktif di kasir</label></div>
 
+        <div class="mt-3"><label class="form-label" for="photo">Ganti foto menu</label><input class="form-control" type="file" id="photo" name="photo" accept="image/jpeg,image/png"></div>
+        @include('posts.recipe')
         <!-- FOOTER BUTTONS -->
         <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
             <a href="{{ route('posts.index') }}" class="btn btn-light rounded-3 px-4 fw-semibold text-dark" style="background-color: #f2f2f2; font-size: 13px;">Batal</a>

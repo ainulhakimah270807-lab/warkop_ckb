@@ -47,13 +47,14 @@
                 <img class="warkop-user-avatar" src="{{ asset('dashmin/img/user.jpg') }}" alt="User Avatar">
                 <div class="overflow-hidden">
                     <p class="warkop-user-name text-truncate">{{ Auth::user()->name ?? 'Pak Heru' }}</p>
-                    <span class="warkop-user-role-badge">Owner</span>
+                    <span class="warkop-user-role-badge">{{ Auth::user()->role ?? '—' }}</span>
                 </div>
             </div>
 
             <!-- Menu Navigation -->
             <div class="warkop-nav-section">MENU UTAMA</div>
             <ul class="warkop-nav-menu">
+                <li><a href="{{ route('owner.index') }}" class="warkop-nav-link {{ request()->is('owner*') ? 'active' : '' }}"><i class="fa-solid fa-link"></i><span>Pusat Owner · Aplikasi</span></a></li>
                 <li>
                     <a href="{{ url('/admin') }}" class="warkop-nav-link {{ request()->is('admin') || request()->is('dashboard') ? 'active' : '' }}">
                         <i class="fa-solid fa-table-cells-large"></i>
@@ -70,7 +71,7 @@
                     <a href="{{ url('/ingredients') }}" class="warkop-nav-link {{ request()->is('ingredients*') ? 'active' : '' }}">
                         <i class="fa-solid fa-wheat-awn"></i>
                         <span>Master Bahan Baku</span>
-                        <span class="warkop-badge-counter">3</span>
+                        <span class="warkop-badge-counter">{{ \App\Models\Ingredient::whereColumn('stock', '<=', 'minimum_stock')->count() }}</span>
                     </a>
                 </li>
                 <li>
@@ -90,7 +91,7 @@
                     <a href="{{ route('notifications.index') }}" class="warkop-nav-link {{ request()->is('notifications*') ? 'active' : '' }}">
                         <i class="fa-solid fa-bell"></i>
                         <span>Notifikasi</span>
-                        <span class="warkop-badge-counter">3</span>
+                        <span class="warkop-badge-counter">{{ \App\Models\Ingredient::whereColumn('stock', '<=', 'minimum_stock')->count() }}</span>
                     </a>
                 </li>
             </ul>
@@ -104,9 +105,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('profile.edit') }}" class="warkop-nav-link {{ request()->is('profile*') ? 'active' : '' }}">
+                    <a href="{{ route('owner.index', ['section' => 'employees']) }}" class="warkop-nav-link">
                         <i class="fa-solid fa-user-gear"></i>
-                        <span>Manajemen User</span>
+                        <span>Akun & jabatan</span>
                     </a>
                 </li>
             </ul>
@@ -149,6 +150,8 @@
 
             <!-- Body Content -->
             <main class="warkop-page-body">
+                @if($errors->any())<div class="alert alert-danger"><strong>Periksa isian:</strong><ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+                @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
                 @yield('content')
             </main>
         </div>

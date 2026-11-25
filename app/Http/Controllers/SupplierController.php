@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class SupplierController extends Controller
 {
@@ -31,7 +33,11 @@ class SupplierController extends Controller
 
     public function destroy(Supplier $supplier)
     {
-        $supplier->delete();
+        DB::transaction(function () use ($supplier) {
+            $locked = Supplier::whereKey($supplier->id)->lockForUpdate()->firstOrFail();
+            if (DB::table('stock_purchases')->where('supplier_id', $locked->id)->exists()) throw ValidationException::withMessages(['supplier' => 'Supplier memiliki riwayat pembelian dan tidak boleh dihapus.']);
+            $locked->delete();
+        });
         return back()->with('success', 'Supplier berhasil dihapus.');
     }
 }

@@ -15,6 +15,7 @@
 
 <form method="POST" action="{{ route('settings.update') }}">
     @csrf
+    <div class="warkop-card mb-4"><label for="tax_percent" class="form-label fw-bold">Pajak penjualan (%)</label><input id="tax_percent" name="tax_percent" type="number" min="0" max="100" step="0.01" required value="{{ old('tax_percent', $settings['tax_percent']) }}" class="form-control" style="max-width:200px"><small class="text-muted">Isi 0 jika tidak memungut pajak. Nilai ini dipakai kasir dan dihitung server.</small></div>
     <div class="row g-4">
         <div class="col-lg-7">
             <div class="warkop-card h-100">

@@ -12,7 +12,8 @@ class TrustProxies extends Middleware
      *
      * @var array<int, string>|string|null
      */
-    protected $proxies;
+    // Local ngrok/reverse-proxy agent. Do not trust forwarded headers from every client.
+    protected $proxies = ['127.0.0.1', '::1'];
 
     /**
      * The headers that should be used to detect proxies.

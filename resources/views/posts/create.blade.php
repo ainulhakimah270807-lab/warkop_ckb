@@ -44,7 +44,7 @@
 
                 <div class="mb-3">
                     <label for="price" class="form-label small fw-semibold text-dark">Harga Dasar (Rp) <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control rounded-3 py-2 fs-6" id="price" name="price" placeholder="cth: 12000" style="background-color: #fafafa;">
+                    <input type="number" class="form-control rounded-3 py-2 fs-6" id="price" name="price" min="0" step="1" required value="{{ old('price') }}" placeholder="cth: 12000" style="background-color: #fafafa;">
                 </div>
 
                 <div class="mb-3">
@@ -119,6 +119,7 @@
 
         </div>
 
+        @include('posts.recipe')
         <!-- FOOTER / BUTTONS -->
         <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
             <a href="{{ route('posts.index') }}" class="btn btn-light rounded-3 px-4 fw-semibold text-dark" style="background-color: #f2f2f2; font-size: 13px;">Batal</a>
